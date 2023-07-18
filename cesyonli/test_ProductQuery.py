@@ -16,8 +16,11 @@ def test_01_ProductQuery():
         "curIndex": 1,
         "screenName": ""
     }
-    cookies={"SESSION":"ZThhZWUyZmEtNjU3Ni00OTUzLWI3ZTUtZGY3MGE5NmQyYmVl"}
+    cookies={"SESSION":"YWJkMGIzNzctNzljMC00ZDE2LTgwMzEtZGQ5NThmZmIyOTVj"} #session会过期
+
     req=requests.post(url=url,json=json,cookies=cookies)
     print(req.text)
+
+    print(req.status_code)
 if __name__ == '__main__':
     test_01_ProductQuery()

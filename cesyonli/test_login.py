@@ -9,6 +9,7 @@ def test_login():
         "password":"4297F44B13955235245B2497399D7A93" #密码
     }
     req=requests.post(url=url,data=data)
-    print(req.text)
+    print(req.status_code)
+
 if __name__ == '__main__':
     test_login()
