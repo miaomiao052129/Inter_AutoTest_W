@@ -1,9 +1,5 @@
 import requests
-#1、创建一个封装的GET方法
-#2、发送requests get请求
-#3、获取结果响应内容
-#4、内容存到字典
-#5、返回字典
+
 def requests_ht_login(url,data):
     """
      【后台管理-登录】
@@ -29,12 +25,12 @@ def requests_ht_ProductQuery(url,json,cookies):
     :param cookies:
     :return: dict
     """
-    reqProductQuery=requests.post(url=url,json=json,cookies=cookies)
-    code=reqProductQuery.status_code
+    req=requests.post(url=url,json=json,cookies=cookies)
+    code=req.status_code
     try:
-        body = reqProductQuery.text
+        body = req.text
     except Exception as e:
-        body = reqProductQuery.json()
+        body = req.json()
     dic=dict()
     dic['code']=code
     dic['body']=body
@@ -48,13 +44,52 @@ def requests_ht_xptjgl_xz(url,params,cookies):
     :param cookies:
     :return:
     """
-    reqxptjglxz=requests.get(url=url,params=params,cookies=cookies)
-    code=reqxptjglxz.status_code
+    req=requests.get(url=url,params=params,cookies=cookies)
+    code=req.status_code
     try:
-        body = reqxptjglxz.text
+        body = req.text
     except Exception as e:
-        body=reqxptjglxz.json()
+        body=req.json()
     dic=dict()
     dic['code']=code
     dic['body']=body
     return dic
+
+# 重构
+#1、创建类（Requests_HouTai）
+class Requests_HouTai:
+# 2、定义公共方法（request_houtai）
+    def request_houtai(self, url,params=None,json=None,cookies=None,data=None,method="get"):
+        #（1）增加方法的参数，根据参数来验证方法get/post的方法请求
+        if method=="get":
+            req=requests.get(url=url,params=params,cookies=cookies)
+            #执行get请求
+        elif method=="post":
+            #执行post请求
+            req = requests.post(url=url, json=json, cookies=cookies,data=data)
+        # （2）重复的内容复制进来
+        code = req.status_code
+        try:
+            body = req.text
+        except Exception as e:
+            body = req.json()
+        dic = dict()
+        dic['code'] = code
+        dic['body'] = body
+        return dic
+#3、重构get/post方法
+    #（3.1) Get方法的重构
+    #1、定义方法
+    def get_houtai(self,url,**kwargs):
+    #2、定义参数
+        #url、json、cookies、cookies、data、method
+    #3、调用公共方法
+        return self.request_houtai(url,method="get",**kwargs)
+
+#（3.1) Post方法的重构
+    #1、定义方法
+    def post_houtai(self,url,**kwargs):
+    #2、定义参数
+        #url、json、cookies、cookies、data、method
+    #3、调用公共方法
+        return self.request_houtai(url,method="post",**kwargs)
